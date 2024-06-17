@@ -47,5 +47,9 @@
   "packageManager": "yarn@3.2.3",
   "engines": {
     "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "ethers": "6.10.0",
+    "react-confetti": "^6.1.0"
   }
 }
