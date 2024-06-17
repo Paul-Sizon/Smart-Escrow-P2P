@@ -13,75 +13,162 @@ import "hardhat/console.sol";
  * @author BuidlGuidl
  */
 contract YourContract {
-	// State Variables
-	address public immutable owner;
-	string public greeting = "Building Unstoppable Apps!!!";
-	bool public premium = false;
-	uint256 public totalCounter = 0;
-	mapping(address => uint) public userGreetingCounter;
+	address public buyer;
+	address public seller;
+	address public arbiter;
+	uint256 public amount;
+	bool public isFunded;
+	bool public isReleased;
+	bool public isDisputed;
+	bool public isCancellationRequested;
+	address public cancellationRequester;
+	string public trackingNumber;
+	address public platformWallet;
+	uint256 public platformFeePercent;
 
-	// Events: a way to emit log statements from smart contract that can be listened to by external parties
-	event GreetingChange(
-		address indexed greetingSetter,
-		string newGreeting,
-		bool premium,
-		uint256 value
-	);
+	event FundsReleased(address seller, uint256 amount);
+	event FundsRefunded(address buyer, uint256 amount);
+	event DisputeOpened();
+	event DisputeResolved();
+	event CancellationRequested(address requester);
+	event EscrowCancelled();
 
-	// Constructor: Called once on contract deployment
-	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
-	constructor(address _owner) {
-		owner = _owner;
+	constructor(
+		address _buyer,
+		address _seller,
+		address _arbiter,
+		address _platformWallet,
+		uint256 _platformFeePercent,
+		string memory _trackingNumber
+	) payable {
+		require(msg.value > 0, "Amount must be greater than zero");
+
+		buyer = _buyer;
+		seller = _seller;
+		arbiter = _arbiter;
+		platformWallet = _platformWallet;
+		platformFeePercent = _platformFeePercent;
+		amount = msg.value;
+		isFunded = true;
+		trackingNumber = _trackingNumber;
 	}
 
-	// Modifier: used to define a set of rules that must be met before or after a function is executed
-	// Check the withdraw() function
-	modifier isOwner() {
-		// msg.sender: predefined variable that represents address of the account that called the current function
-		require(msg.sender == owner, "Not the Owner");
+	modifier onlyBuyerOrArbiter() {
+		require(
+			msg.sender == buyer || msg.sender == arbiter,
+			"Only buyer or arbiter can call this function"
+		);
 		_;
 	}
 
-	/**
-	 * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-	 *
-	 * @param _newGreeting (string memory) - new greeting to save on the contract
-	 */
-	function setGreeting(string memory _newGreeting) public payable {
-		// Print data to the hardhat chain console. Remove when deploying to a live network.
-		console.log(
-			"Setting new greeting '%s' from %s",
-			_newGreeting,
-			msg.sender
+	modifier onlyBuyerOrSeller() {
+		require(
+			msg.sender == buyer || msg.sender == seller,
+			"Only buyer or seller can call this function"
+		);
+		_;
+	}
+
+	modifier onlyArbiter() {
+		require(msg.sender == arbiter, "Only arbiter can call this function");
+		_;
+	}
+
+	modifier whenNotFunded() {
+		require(!isFunded, "Escrow is already funded");
+		_;
+	}
+
+	modifier whenFunded() {
+		require(isFunded, "Escrow is not funded");
+		_;
+	}
+
+	modifier whenNotReleased() {
+		require(!isReleased, "Funds already released");
+		_;
+	}
+
+	modifier whenDisputed() {
+		require(isDisputed, "Escrow is not disputed");
+		_;
+	}
+
+	modifier whenNotDisputed() {
+		require(!isDisputed, "Escrow is disputed");
+		_;
+	}
+
+	function releaseFunds()
+		public
+		whenFunded
+		whenNotReleased
+		onlyBuyerOrArbiter
+		whenNotDisputed
+	{
+		isReleased = true;
+		uint256 platformFee = (amount * platformFeePercent) / 100;
+		uint256 amountToSeller = amount - platformFee;
+
+		payable(platformWallet).transfer(platformFee);
+		payable(seller).transfer(amountToSeller);
+
+		emit FundsReleased(seller, amountToSeller);
+	}
+
+	function refundFunds()
+		public
+		whenFunded
+		whenNotReleased
+		onlyArbiter
+		whenNotDisputed
+	{
+		isReleased = true;
+		payable(buyer).transfer(amount);
+
+		emit FundsRefunded(buyer, amount);
+	}
+
+	function openDispute() public onlyBuyerOrSeller whenNotDisputed {
+		isDisputed = true;
+		emit DisputeOpened();
+	}
+
+	function resolveDispute(
+		bool releaseToSeller
+	) public onlyArbiter whenDisputed {
+		isDisputed = false;
+		releaseToSeller ? releaseFunds() : refundFunds();
+		emit DisputeResolved();
+	}
+
+	function cancelEscrow() public onlyBuyerOrSeller {
+		require(!isCancellationRequested, "Cancellation already requested");
+
+		isCancellationRequested = true;
+		cancellationRequester = msg.sender;
+
+		emit CancellationRequested(msg.sender);
+	}
+
+	function confirmCancellation() public onlyBuyerOrSeller {
+		require(isCancellationRequested, "Cancellation not requested");
+		require(
+			msg.sender != cancellationRequester,
+			"Cancellation must be confirmed by the other party"
 		);
 
-		// Change state variables
-		greeting = _newGreeting;
-		totalCounter += 1;
-		userGreetingCounter[msg.sender] += 1;
+		isReleased = true;
+		isCancellationRequested = false;
+		payable(buyer).transfer(amount);
 
-		// msg.value: built-in global variable that represents the amount of ether sent with the transaction
-		if (msg.value > 0) {
-			premium = true;
-		} else {
-			premium = false;
-		}
-
-		// emit: keyword used to trigger an event
-		emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
+		emit EscrowCancelled();
+		emit FundsRefunded(buyer, amount);
 	}
 
-	/**
-	 * Function that allows the owner to withdraw all the Ether in the contract
-	 * The function can only be called by the owner of the contract as defined by the isOwner modifier
-	 */
-	function withdraw() public isOwner {
-		(bool success, ) = owner.call{ value: address(this).balance }("");
-		require(success, "Failed to send Ether");
+	receive() external payable whenNotFunded {
+		require(msg.value > 0, "Amount must be greater than zero");
+		amount = msg.value;
+		isFunded = true;
 	}
-
-	/**
-	 * Function that allows the contract to receive ETH
-	 */
-	receive() external payable {}
 }

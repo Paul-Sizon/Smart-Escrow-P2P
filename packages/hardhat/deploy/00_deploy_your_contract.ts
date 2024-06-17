@@ -22,19 +22,35 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
+  
+  const buyer = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+  const seller = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
+  const arbiter = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
+  const platform_wallet = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
+  const platform_fee_percent = 10;
+  const tracking_number = "123456789";
+  const amount = "1000000000000000000";
+
   await deploy("YourContract", {
     from: deployer,
     // Contract constructor arguments
-    args: [deployer],
+    args: [
+      buyer,
+      seller,
+      arbiter,
+      platform_wallet,
+      platform_fee_percent,
+      tracking_number
+    ],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
+    value: amount
   });
 
   // Get the deployed contract to interact with it after deploying.
   const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greeting());
 };
 
 export default deployYourContract;
