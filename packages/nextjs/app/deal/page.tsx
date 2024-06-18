@@ -123,7 +123,7 @@ const DealPage: React.FC = () => {
     const isConfirmDisabled = isButtonDisabled(status);
     const isCancelDisabled = isButtonDisabled(status);
     const isDisputeDisabled = isButtonDisabled(status);
-    
+
     return (
         <div className="max-w-lg mx-auto my-8 p-4 border border-gray-200 rounded-lg shadow-lg">
             {showConfetti && <Confetti width={width} height={height} />}
@@ -131,6 +131,8 @@ const DealPage: React.FC = () => {
             <div className="text-center mt-4">
                 <h1 className="text-2xl font-semibold text-gray-800">{item.title}</h1>
                 <p className="text-gray-600">{item.description}</p>
+                <p className="text-gray-600">Meet with seller to receive item</p>
+                
                 <p className="text-xl font-semibold text-gray-800 mt-4">Price: ${item.price.toFixed(2)}</p>
                 <p className="text-lg font-semibold text-gray-800 mt-4">Status: {status}</p>
                 <div className="mt-4 flex flex-col items-center space-y-4">
