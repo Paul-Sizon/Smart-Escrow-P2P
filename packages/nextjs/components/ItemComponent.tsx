@@ -1,18 +1,13 @@
-// components/ItemComponent.tsx
+
 import React, { useState, useEffect } from 'react';
 import { ethers } from "ethers";
 import { useWalletClient } from 'wagmi';
-import { QRCodeSVG } from 'qrcode.react';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'usehooks-ts';
+import { useRouter } from 'next/navigation';
 import { Item } from '../app/item/item';
-import {
-    ContractAbi, 
-  } from "~~/utils/scaffold-eth/contract";
 import deployedContracts from '~~/contracts/deployedContracts';
 import { getBytecode } from '~~/app/api/getBytecode';
-
-
 
 interface ItemComponentProps {
     item: Item;
@@ -25,6 +20,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
 
     const { width, height } = useWindowSize();
     const walletClient = useWalletClient();
+    const router = useRouter();
 
     const getContractFactory = async () => {
         if (!walletClient.data) {
@@ -48,7 +44,6 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
         setIsLoading(true);
         try {
             const buyer = walletClient.data?.account.address;
-            // const buyer = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
             const seller = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
             const arbiter = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
             const platformWallet = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
@@ -56,8 +51,6 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             const trackingNumber = "123456789";
             const amount = ethers.parseEther(item.price.toString());
             const gasLimit = 3000000;
-
-            console.log(`${buyer}`);
 
             const contract = await contractFactory.deploy(
                 buyer,
@@ -71,7 +64,9 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
 
             await contract.waitForDeployment();
 
-            console.log("Contract deployed at:", contract.getAddress());
+            const contractAddress = await contract.getAddress();
+
+            console.log("Contract deployed at:", contractAddress);
 
             setShowSuccessAlert(true);
             setShowConfetti(true);
@@ -79,10 +74,9 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
                 setShowSuccessAlert(false);
                 setShowConfetti(false);
             }, 5000);
-            contractFactory.bytecode
 
-            // Redirect to deal page
-            window.location.href = `/deal`;
+            // Redirect to deal page with contract address in the query parameters
+            router.push(`/deal?contractAddress=${contractAddress}&itemId=${item.id}`);
         } catch (error) {
             console.error('Error deploying contract:', error);
         } finally {

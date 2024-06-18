@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useWalletClient } from 'wagmi';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'usehooks-ts';
@@ -10,9 +10,12 @@ import { Item } from '../item/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 
 const DealPage: React.FC = () => {
-    const router = useRouter();
+    // const router = useRouter();
+    const searchParams = useSearchParams()
+    const contractAddress = searchParams.get('contractAddress');
+    const itemId = searchParams.get('itemId');
+
     const [item, setItem] = useState<Item | null>(null);
-    const [contractAddress, setContractAddress] = useState<string | null>(null);
     const [status, setStatus] = useState<string>('Pending');
     const [isLoading, setIsLoading] = useState(false);
     const [showConfetti, setShowConfetti] = useState(false);
@@ -20,23 +23,24 @@ const DealPage: React.FC = () => {
     const { width, height } = useWindowSize();
     const walletClient = useWalletClient();
 
-    useEffect(() => {   
+    useEffect(() => {
         const fetchItem = async () => {
+            // Replace with your actual data fetching logic
             const fetchedItem: Item = {
-                id: "1",
-                imageUrl: 'https://via.placeholder.com/500',
+                id: itemId as string,
+                imageUrl: 'https://via.placeholder.com/500', // Replace with actual image URL
                 price: 1.0, // Replace with actual price
                 title: 'Sample Item', // Replace with actual title
                 description: 'This is a sample item description',
                 sellerAddress: '0x...'
             };
             setItem(fetchedItem);
-            setContractAddress('0x..'); // Replace with the actual contract address
         };
 
+        if (itemId) {
             fetchItem();
-        
-    }, []);
+        }
+    }, [itemId]);
 
     const handleConfirm = async () => {
         if (!walletClient.data || !contractAddress) return;
@@ -44,8 +48,8 @@ const DealPage: React.FC = () => {
         const chainId = 31337;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;               
-        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
         try {

@@ -3,6 +3,7 @@
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -20,9 +21,11 @@ const Home: NextPage = () => {
             <Address address={connectedAddress} />
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 mt-4">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded">
-              <span role="img" aria-label="buyer">🛍️</span> I'm a buyer
-            </button>
+            <Link href="/item">
+              <button className="bg-blue-500 text-white py-2 px-4 rounded">
+                <span role="img" aria-label="buyer">🛍️</span> I'm a buyer
+              </button>
+            </Link>
             <button className="bg-green-500 text-white py-2 px-4 rounded">
               <span role="img" aria-label="seller">🏷️</span> I'm a seller
             </button>
