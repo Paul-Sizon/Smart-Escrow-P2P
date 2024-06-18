@@ -10,8 +10,7 @@ import { Item } from '../item/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 
 const DealPage: React.FC = () => {
-    // const router = useRouter();
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     const contractAddress = searchParams.get('contractAddress');
     const itemId = searchParams.get('itemId');
 
@@ -19,6 +18,7 @@ const DealPage: React.FC = () => {
     const [status, setStatus] = useState<string>('Pending');
     const [isLoading, setIsLoading] = useState(false);
     const [showConfetti, setShowConfetti] = useState(false);
+
 
     const { width, height } = useWindowSize();
     const walletClient = useWalletClient();
@@ -66,10 +66,64 @@ const DealPage: React.FC = () => {
         }
     };
 
+    const handleCancel = async () => {
+        if (!walletClient.data || !contractAddress) return;
+
+        const chainId = 31337;
+        const provider = new ethers.BrowserProvider(walletClient.data);
+        const signer = await provider.getSigner();
+        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const contract = new ethers.Contract(contractAddress as string, abi, signer);
+
+        setIsLoading(true);
+        try {
+            const tx = await contract.cancelEscrow();
+            await tx.wait();
+
+            setStatus('Cancellation is requested. Wait for seller to confirm.');
+        } catch (error) {
+            console.error('Error cancelling escrow:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDispute = async () => {
+        if (!walletClient.data || !contractAddress) return;
+
+        const chainId = 31337;
+        const provider = new ethers.BrowserProvider(walletClient.data);
+        const signer = await provider.getSigner();
+        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const contract = new ethers.Contract(contractAddress as string, abi, signer);
+
+        setIsLoading(true);
+        try {
+            const tx = await contract.openDispute();
+            await tx.wait();
+
+            setStatus('Dispute Opened');
+        } catch (error) {
+            console.error('Error opening dispute:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (!item) {
         return <div>Loading...</div>;
     }
 
+    const disablingStatuses = ['Funds Released', 'Escrow Cancelled', 'Dispute Opened', 'Cancellation is requested. Wait for seller to confirm.'];
+
+    const isButtonDisabled = (status: string) => {
+        return isLoading || disablingStatuses.includes(status);
+    };
+
+    const isConfirmDisabled = isButtonDisabled(status);
+    const isCancelDisabled = isButtonDisabled(status);
+    const isDisputeDisabled = isButtonDisabled(status);
+    
     return (
         <div className="max-w-lg mx-auto my-8 p-4 border border-gray-200 rounded-lg shadow-lg">
             {showConfetti && <Confetti width={width} height={height} />}
@@ -79,13 +133,29 @@ const DealPage: React.FC = () => {
                 <p className="text-gray-600">{item.description}</p>
                 <p className="text-xl font-semibold text-gray-800 mt-4">Price: ${item.price.toFixed(2)}</p>
                 <p className="text-lg font-semibold text-gray-800 mt-4">Status: {status}</p>
-                <button
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400"
-                    onClick={handleConfirm}
-                    disabled={isLoading || status === 'Funds Released'}
-                >
-                    {isLoading ? 'Processing...' : 'Confirm'}
-                </button>
+                <div className="mt-4 flex flex-col items-center space-y-4">
+                    <button
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+                        onClick={handleConfirm}
+                        disabled={isConfirmDisabled}
+                    >
+                        {isLoading ? 'Processing...' : 'Confirm'}
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors disabled:bg-gray-400"
+                        onClick={handleDispute}
+                        disabled={isDisputeDisabled}
+                    >
+                        {isLoading ? 'Processing...' : 'Open dispute'}
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:bg-gray-400"
+                        onClick={handleCancel}
+                        disabled={isCancelDisabled}
+                    >
+                        {isLoading ? 'Processing...' : 'Request Cancellation'}
+                    </button>
+                </div>
             </div>
         </div>
     );
