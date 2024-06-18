@@ -97,6 +97,8 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             )}
             <img src={item.imageUrl} alt="Item Image" className="w-full h-auto rounded" />
             <div className="text-center mt-4">
+                <h1 className="text-2xl font-semibold text-gray-800">{item.title}</h1>
+                <p className="text-gray-600">{item.description}</p>
                 <h2 className="text-xl font-semibold text-gray-800">Price: ${item.price.toFixed(2)}</h2>
                 <button
                     className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400"

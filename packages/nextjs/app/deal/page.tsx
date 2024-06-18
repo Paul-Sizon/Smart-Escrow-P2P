@@ -28,10 +28,10 @@ const DealPage: React.FC = () => {
             // Replace with your actual data fetching logic
             const fetchedItem: Item = {
                 id: itemId as string,
-                imageUrl: 'https://via.placeholder.com/500', // Replace with actual image URL
-                price: 1.0, // Replace with actual price
-                title: 'Sample Item', // Replace with actual title
-                description: 'This is a sample item description',
+                imageUrl: 'https://i.ibb.co/bzL1r9t/ps5.jpg', // Replace with actual image URL
+                price: 0.01, // Replace with actual price
+                title: 'PS5 + games', // Replace with actual title
+                description: 'Great condition',
                 sellerAddress: '0x...'
             };
             setItem(fetchedItem);
@@ -131,8 +131,7 @@ const DealPage: React.FC = () => {
             <div className="text-center mt-4">
                 <h1 className="text-2xl font-semibold text-gray-800">{item.title}</h1>
                 <p className="text-gray-600">{item.description}</p>
-                <p className="text-gray-600">Meet with seller to receive item</p>
-                
+                <p className="text-gray-600">Meet with seller to receive item</p>                
                 <p className="text-xl font-semibold text-gray-800 mt-4">Price: ${item.price.toFixed(2)}</p>
                 <p className="text-lg font-semibold text-gray-800 mt-4">Status: {status}</p>
                 <div className="mt-4 flex flex-col items-center space-y-4">
