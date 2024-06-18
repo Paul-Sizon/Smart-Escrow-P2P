@@ -8,7 +8,9 @@ const item: Item = {
   id: '1', // Static ID, not used in navigation but can be useful for tracking or debugging
   imageUrl: 'https://via.placeholder.com/500',
   price: 0.01,
-  sellerAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC'
+  sellerAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
+  title: 'Sample Item',
+  description: 'This is a sample item description'
 };
 
 const ItemPage: NextPage = () => {

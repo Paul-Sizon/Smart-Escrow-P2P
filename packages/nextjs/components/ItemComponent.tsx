@@ -21,7 +21,7 @@ interface ItemComponentProps {
 const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showConfetti, setShowConfetti] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);   
 
     const { width, height } = useWindowSize();
     const walletClient = useWalletClient();
@@ -36,7 +36,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;       
-        const bytecode = getBytecode();
+        const bytecode = getBytecode();        
 
         return new ethers.ContractFactory(abi, bytecode, signer);
     };
@@ -47,14 +47,17 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
 
         setIsLoading(true);
         try {
-            const buyer = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
-            const seller = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
-            const arbiter = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
-            const platformWallet = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
+            const buyer = walletClient.data?.account.address;
+            // const buyer = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+            const seller = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+            const arbiter = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+            const platformWallet = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
             const platformFeePercent = 10;
             const trackingNumber = "123456789";
             const amount = ethers.parseEther(item.price.toString());
             const gasLimit = 3000000;
+
+            console.log(`${buyer}`);
 
             const contract = await contractFactory.deploy(
                 buyer,
@@ -79,7 +82,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             contractFactory.bytecode
 
             // Redirect to deal page
-            window.location.href = `/deal/${item.id}`;
+            window.location.href = `/deal`;
         } catch (error) {
             console.error('Error deploying contract:', error);
         } finally {
