@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
-import { WagmiProvider } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
+
+import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import { WagmiConfig, WagmiProvider } from "wagmi";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
+
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   useInitializeNativeCurrencyPrice();
@@ -48,14 +52,22 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <ProgressBar />
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
-          <ScaffoldEthApp>{children}</ScaffoldEthApp>
-        </RainbowKitProvider>
-      </QueryClientProvider>
+    <DynamicContextProvider
+      settings={{
+        environmentId: 'de7487b9-ba4c-4e93-a5b8-662ee53d48d9',
+      walletConnectors: [ EthereumWalletConnectors ],
+      }}
+    >
+      <DynamicWagmiConnector>
+       
+          
+            <ProgressBar />
+            <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          
+      
+      </DynamicWagmiConnector>
+    </DynamicContextProvider>
+    </QueryClientProvider>
     </WagmiProvider>
   );
 };
