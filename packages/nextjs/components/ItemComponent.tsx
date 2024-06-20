@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Item } from '../utils/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 import { getBytecode } from '~~/app/api/getBytecode';
+import { supabase } from '~~/utils/supabase/client';
 
 interface ItemComponentProps {
     item: Item;
@@ -84,6 +85,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             const platformFeePercent = 10;
             const trackingNumber = "123456789";
             const amount = ethers.parseEther(ethAmount);
+            const testAmount = ethers.parseEther('0.001');
             const gasLimit = 3000000;
 
             const contract = await contractFactory.deploy(
@@ -93,7 +95,9 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
                 platformWallet,
                 platformFeePercent,
                 trackingNumber,
-                { value: amount, gasLimit }
+                { 
+                    value: testAmount, // for test purposes, we will have small amounts
+                    gasLimit: gasLimit }
             );
 
             await contract.waitForDeployment();
@@ -101,6 +105,27 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             const contractAddress = await contract.getAddress();
 
             console.log("Contract deployed at:", contractAddress);
+
+            // Save deal information to Supabase
+            const { error } = await supabase
+                .from('deal')
+                .insert([
+                    {
+                        item: item.title,
+                        price: item.price.toFixed(2),
+                        buyer: buyer,
+                        seller: seller,
+                        status: 'Pending',
+                        image: item.imageUrl,
+                        contract_address: contractAddress
+                    }
+                ]);
+
+            if (error) {
+                console.error('Error saving deal to Supabase:', error);
+            } else {
+                console.log('Deal saved to Supabase successfully');
+            }
 
             setShowSuccessAlert(true);
             setShowConfetti(true);
@@ -110,7 +135,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             }, 5000);
 
             // Redirect to deal page with contract address in the query parameters
-            router.push(`/deal?contractAddress=${contractAddress}&itemId=${item.id}`);
+            router.push(`/deal?contractAddress=${contractAddress}&role=buyer`);
         } catch (error) {
             console.error('Error deploying contract:', error);
         } finally {

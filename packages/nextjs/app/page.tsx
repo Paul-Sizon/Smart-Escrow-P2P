@@ -21,17 +21,21 @@ const Home: NextPage = () => {
             <Address address={connectedAddress} />
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 mt-4">
-            <Link href="/item">
+            <Link href="/item?role=buyer">
               <button className="bg-blue-500 text-white py-2 px-4 rounded">
                 <span role="img" aria-label="buyer">🛍️</span> I'm a buyer
               </button>
+            </Link>           
+            <Link href="/status?role=seller">
+              <button className="bg-green-500 text-white py-2 px-4 rounded">
+                <span role="img" aria-label="seller">🏷️</span> I'm a seller
+              </button>
+            </Link>                    
+            <Link href="/status?role=arbiter">
+              <button className="bg-yellow-500 text-white py-2 px-4 rounded">
+                <span role="img" aria-label="arbiter">⚖️</span> I'm an arbiter
+              </button>
             </Link>
-            <button className="bg-green-500 text-white py-2 px-4 rounded">
-              <span role="img" aria-label="seller">🏷️</span> I'm a seller
-            </button>
-            <button className="bg-yellow-500 text-white py-2 px-4 rounded">
-              <span role="img" aria-label="arbiter">⚖️</span> I'm an arbiter
-            </button>
           </div>
         </div>
       </div>
