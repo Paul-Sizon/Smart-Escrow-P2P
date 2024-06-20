@@ -4,7 +4,7 @@ import { useWalletClient } from 'wagmi';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'usehooks-ts';
 import { useRouter } from 'next/navigation';
-import { Item } from '../app/item/item';
+import { Item } from '../utils/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 import { getBytecode } from '~~/app/api/getBytecode';
 

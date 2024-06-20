@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useWalletClient } from 'wagmi';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'usehooks-ts';
-import { Item } from '../item/item';
+import { Item } from '../../utils/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 
 const DealPage: React.FC = () => {

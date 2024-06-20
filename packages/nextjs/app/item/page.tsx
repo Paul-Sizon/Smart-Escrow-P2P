@@ -2,7 +2,7 @@
 
 import {  NextPage } from 'next';
 import ItemComponent from '../../components/ItemComponent';
-import { Item } from './item';
+import { Item } from '../../utils/item';
 
 const item: Item = {
   id: '1', // Static ID, not used in navigation but can be useful for tracking or debugging
