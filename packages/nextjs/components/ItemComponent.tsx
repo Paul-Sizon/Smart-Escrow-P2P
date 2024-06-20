@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ethers } from "ethers";
 import { useWalletClient } from 'wagmi';
@@ -15,24 +14,59 @@ interface ItemComponentProps {
 
 const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [ethPrice, setEthPrice] = useState<number | null>(null);
+    const [usdAmount, setUsdAmount] = useState(item.price.toFixed(2));
+    const [ethAmount, setEthAmount] = useState<string>('');
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showConfetti, setShowConfetti] = useState(false);   
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const { width, height } = useWindowSize();
     const walletClient = useWalletClient();
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchEthPrice = async () => {
+            try {
+                const response = await fetch('/api/ethprice');
+                const data = await response.json();
+                setEthPrice(data.ethereum.usd);
+            } catch (err) {
+                console.error('Error fetching ETH price:', err);
+            }
+        };
+
+        fetchEthPrice();
+    }, []);
+
+    const convertUsdToEth = (usdAmount: number): string | null => {
+        if (ethPrice) {
+            return (usdAmount / ethPrice).toFixed(18); // 18 decimals for ETH
+        }
+        return null;
+    };
+
+    useEffect(() => {
+        if (usdAmount) {
+            const eth = convertUsdToEth(Number(usdAmount));
+            if (eth) {
+                setEthAmount(eth);
+            }
+        } else {
+            setEthAmount('');
+        }
+    }, [usdAmount, ethPrice]);
 
     const getContractFactory = async () => {
         if (!walletClient.data) {
             console.error('No provider available');
             return null;
         }
-        
+
         const chainId = 31337;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;       
-        const bytecode = getBytecode();        
+        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const bytecode = getBytecode();
 
         return new ethers.ContractFactory(abi, bytecode, signer);
     };
@@ -49,7 +83,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             const platformWallet = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
             const platformFeePercent = 10;
             const trackingNumber = "123456789";
-            const amount = ethers.parseEther(item.price.toString());
+            const amount = ethers.parseEther(ethAmount);
             const gasLimit = 3000000;
 
             const contract = await contractFactory.deploy(
