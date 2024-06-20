@@ -44,6 +44,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
   const [mounted, setMounted] = useState(false);
+  const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ID;
 
   useEffect(() => {
     setMounted(true);
@@ -52,22 +53,18 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-    <DynamicContextProvider
-      settings={{
-        environmentId: 'de7487b9-ba4c-4e93-a5b8-662ee53d48d9',
-      walletConnectors: [ EthereumWalletConnectors ],
-      }}
-    >
-      <DynamicWagmiConnector>
-       
-          
+        <DynamicContextProvider
+          settings={{
+            environmentId: environmentId!,
+            walletConnectors: [EthereumWalletConnectors],
+          }}
+        >
+          <DynamicWagmiConnector>
             <ProgressBar />
             <ScaffoldEthApp>{children}</ScaffoldEthApp>
-          
-      
-      </DynamicWagmiConnector>
-    </DynamicContextProvider>
-    </QueryClientProvider>
+          </DynamicWagmiConnector>
+        </DynamicContextProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 };
