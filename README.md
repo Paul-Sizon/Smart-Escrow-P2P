@@ -5,6 +5,29 @@ Smart Escrow P2P is a feature designed to bring security and trust to peer-to-pe
 ## Project Overview:
 Smart Escrow P2P is not a complete app, but a robust feature that can be integrated into existing or new applications. It provides a framework for creating secure, trustless transactions using cryptocurrency, making it ideal for marketplaces where users buy and sell second-hand items.
 
+## Why Use Crypto Escrow for P2P Marketplaces?
+
+Emerging markets face several challenges in the context of peer-to-peer (P2P) marketplaces:
+
+1. **Reducing Scam Risks in Transactions**: 
+   - Traditional P2P transactions often require physical meetups, which can pose safety risks.
+   - Crypto escrow mitigates the risk of scams by holding the funds in escrow until all conditions of the transaction are met. This ensures that the buyer receives the goods and the seller gets paid, enhancing the safety and trust between parties.
+
+2. **Unstable Local Currency**: 
+   - Fluctuating exchange rates can affect the value of transactions and create uncertainty.
+   - Using cryptocurrency can provide a stable and universal medium of exchange, mitigating the risks associated with unstable local currencies.
+
+3. **High Fees for Credit Cards**: 
+   - Credit card transactions can incur high fees, which can be a significant burden in markets with low transaction volumes or high sensitivity to costs.
+   - Cryptocurrency transactions generally have lower fees compared to traditional banking and credit card systems, making it a cost-effective solution.
+
+4. **Increasing Crypto Adoption**:
+   - More and more people in emerging markets are starting to use cryptocurrency, driven by the need for a reliable and stable financial system.
+   - Crypto escrow leverages this growing trend, offering a familiar and trusted method for securing transactions.
+
+By leveraging the benefits of crypto escrow, P2P marketplaces in emerging markets can overcome these challenges, providing a more secure, stable, and cost-effective platform for users.
+
+
 ## Key Features:
 - 🌐🔒 **Decentralized Escrow:**  Ensures funds are only released when both parties fulfill the terms of the transaction, reducing fraud and increasing trust.
 - 👩‍⚖️ **Dispute Resolution:** In case of a dispute, a third-party arbiter (defined by the developer implementing this feature, typically the platform itself) can intervene to resolve the issue fairly and efficiently.
@@ -17,56 +40,6 @@ Smart Escrow P2P is not a complete app, but a robust feature that can be integra
 One of the standout features of Smart Escrow P2P is the use of Dynamic Wallets. This technology simplifies the process of creating and managing cryptocurrency wallets, making it more accessible to users who may not be familiar with crypto. By automating wallet setup and management, users can easily onboard and participate in secure transactions without needing extensive knowledge of blockchain technology. This feature significantly lowers the barrier to entry, fostering greater adoption and usability in P2P marketplaces.
 
 ⚙️ Built using Solidity, Dynamic wallet, NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
-
-### Based on 🙌[Scaffold-ETH 2](https://scaffoldeth.io)🙌
-### Built for 🌎[ETH Global](https://ethglobal.com)🌏
-
-
-## Quickstart
-
-Before you begin, you need to install the following tools:
-
-- [Node (>= v18.17)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
-
-To get started with Escrow, follow the steps below:
-
-1. Install dependencies if it was skipped in CLI:
-
-```
-yarn install
-```
-
-2. Run a local network in the first terminal:
-
-```
-yarn chain
-```
-
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
-
-3. On a second terminal, deploy the test contract:
-
-```
-yarn deploy
-```
-
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
-
-4. On a third terminal, start your NextJS app:
-
-```
-yarn start
-```
-
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
-
-Run smart contract test with `yarn hardhat:test`
-
-- Edit your smart contract `EscrowContract.sol` in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/hardhat/deploy`
 
 ## Roles and Functionality
 
@@ -96,7 +69,57 @@ The Smart Escrow P2P system supports three primary roles: buyer, seller, and arb
 ### Platform Fee:
 The platform may optionally take a percentage of each transaction as a fee. This can be configured by the platform administrators.
 
-### Recommended Deployment:
-It is advised to use the escrow feature on Layer 2 (L2) chains like Optimism, Arbitrum, etc., to reduce gas fees and improve transaction efficiency.
+## Quickstart
+
+Before you begin, you need to install the following tools:
+
+- [Node (>= v18.17)](https://nodejs.org/en/download/)
+- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+- [Git](https://git-scm.com/downloads)
+
+To get started with Escrow, follow the steps below:
+
+1. Install dependencies if it was skipped in CLI:
+
+```
+yarn install
+```
+
+
+2. Set up your Dynamic account and configure your project to use Dynamic. Refer to the [Dynamic documentation](https://docs.dynamic.xyz) for detailed instructions.
+
+3. On a third terminal, start your NextJS app:
+
+```
+yarn start
+```
+
+## Important Files
+
+- **Smart Contract**: `EscrowContract.sol` in `packages/hardhat/contracts`
+- **Dynamic Configuration**: `ScaffoldEthAppWithProviders.tsx`
+- **Frontend Components**:
+  - `ItemComponent.tsx`
+  - `app/deal/page.tsx`
+  - `app/status/page.tsx`
+  - `app/item/page.tsx`
+
+## Developer's Role in Integrating This Product into Your App
+
+Your role as a developer is to integrate the smart contract into your app. Here's a breakdown of responsibilities:
+
+- **Buyer Address**: Provided by Dynamic wallet.
+- **Seller Address**: Must be set up through your back-end.
+- **Arbiter**: Provided as your customer service personnel.
+- **Platform Wallet**: This is your platform wallet and you can set up a commission if desired.
+- **Tracking ID**: Must be provided through your back-end.
+
+## Deployment Notes
+
+Deployment is not necessary for every instance, as each contract gets deployed when there is a pair of buyer and seller. This choice is made for isolation, security, and simplicity. However, it's entirely possible to create a monolithic smart contract that handles everything. Fees are not high when you are on Layer 2 (L2) chains like Optimism or Arbitrum, which is recommended for lowering gas fees.
 
 This setup ensures a seamless, secure, and efficient experience for users, whether they are familiar with cryptocurrency or new to the ecosystem. The use of Dynamic Wallets simplifies onboarding and enhances accessibility, making it easier for users to participate in decentralized transactions.
+
+
+### Based on 🙌[Scaffold-ETH 2](https://scaffoldeth.io)🙌
+### Built for 🌎[ETH Global](https://ethglobal.com)🌏
