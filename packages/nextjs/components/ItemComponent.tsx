@@ -63,7 +63,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
             return null;
         }
 
-        const chainId = 31337;
+        const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;
@@ -79,7 +79,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
         setIsLoading(true);
         try {
             const buyer = walletClient.data?.account.address;
-            const seller = walletClient.data?.account.address;
+            const seller = "0x5994ec6ee2c04EBC93B757A12A647DeB544b7f05";
             const arbiter = walletClient.data?.account.address;
             const platformWallet = walletClient.data?.account.address;
             const platformFeePercent = 10;

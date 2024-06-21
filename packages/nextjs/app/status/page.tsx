@@ -51,6 +51,8 @@ const StatusesPage: React.FC = () => {
         return 'text-orange-500';
       case 'Refund Processed':
         return 'text-blue-500';
+      case 'Cancellation confirmed':
+        return 'text-red-500';  
       default:
         return 'text-gray-500';
     }

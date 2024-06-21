@@ -60,7 +60,7 @@ const DealPage: React.FC = () => {
     const handleConfirm = async () => {
         if (!walletClient.data || !contractAddress) return;
 
-        const chainId = 31337;
+        const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;
@@ -84,7 +84,7 @@ const DealPage: React.FC = () => {
     const handleCancel = async () => {
         if (!walletClient.data || !contractAddress) return;
 
-        const chainId = 31337;
+        const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;
@@ -103,10 +103,32 @@ const DealPage: React.FC = () => {
         }
     };
 
+    const confirmCancellation = async () => {
+        if (!walletClient.data || !contractAddress) return;
+
+        const chainId = 11155111;
+        const provider = new ethers.BrowserProvider(walletClient.data);
+        const signer = await provider.getSigner();
+        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const contract = new ethers.Contract(contractAddress as string, abi, signer);
+
+        setIsLoading(true);
+        try {
+            const tx = await contract.confirmCancellation();
+            await tx.wait();
+
+            await updateDealStatus('Cancellation confirmed');
+        } catch (error) {
+            console.error('Error cancelling escrow:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleDispute = async () => {
         if (!walletClient.data || !contractAddress) return;
 
-        const chainId = 31337;
+        const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;
@@ -128,7 +150,7 @@ const DealPage: React.FC = () => {
     const handleResolveDispute = async (releaseToSeller: boolean) => {
         if (!walletClient.data || !contractAddress) return;
 
-        const chainId = 31337;
+        const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
         const abi = deployedContracts[chainId]?.YourContract?.abi;
@@ -151,7 +173,7 @@ const DealPage: React.FC = () => {
         return <div>Loading...</div>;
     }
 
-    const disablingStatuses = ['Funds Released', 'Escrow Cancelled', 'Dispute Opened', 'Cancellation Requested', 'Refund Processed'];
+    const disablingStatuses = ['Funds Released', 'Escrow Cancelled', 'Dispute Opened', 'Cancellation Requested', 'Refund Processed, Cancellation confirmed'];
 
     const isButtonDisabled = (status: string) => {
         return isLoading || disablingStatuses.includes(status);
@@ -202,10 +224,10 @@ const DealPage: React.FC = () => {
                         <>
                             <button
                                 className="btn btn-error btn-outline transition-colors disabled:bg-gray-400"
-                                onClick={handleCancel}
+                                onClick={confirmCancellation}
                                 disabled={isCancelDisabled}
                             >
-                                {isLoading ? 'Processing...' : 'Request Cancellation'}
+                                {isLoading ? 'Processing...' : 'Cancel order'}
                             </button>
                             <button
                                 className="btn btn-warning transition-colors disabled:bg-gray-400"

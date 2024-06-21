@@ -27,9 +27,9 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const seller = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
   const arbiter = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
   const platform_wallet = "0x90F79bf6EB2c4f870365E785982E1f101E93b906";
-  const platform_fee_percent = 10;
+  const platform_fee_percent = 1;
   const tracking_number = "123456789";
-  const amount = "1000000000000000000";
+  const amount = "1";
 
   await deploy("YourContract", {
     from: deployer,

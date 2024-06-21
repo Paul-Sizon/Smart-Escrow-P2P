@@ -22,13 +22,13 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 mt-4">
             <Link href="/item?role=buyer">
-              <button className="btn btn-info btn-xs sm:btn-sm md:btn-md text-black">🛍️ I'm a buyer</button>
+              <button className="btn btn-info  md:btn-md text-black">🛍️ I'm a buyer</button>
             </Link>
             <Link href="/status?role=seller">
-              <button className="btn btn-success btn-xs sm:btn-sm md:btn-md text-black">🏷️ I'm a seller</button>
+              <button className="btn btn-success  md:btn-md text-black">🏷️ I'm a seller</button>
             </Link>
             <Link href="/status?role=arbiter">
-              <button className="btn btn-warning btn-xs sm:btn-sm md:btn-md text-black">⚖️ I'm an arbiter</button>
+              <button className="btn btn-warning md:btn-md text-black">⚖️ I'm an arbiter</button>
             </Link>
           </div>
         </div>
