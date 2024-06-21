@@ -8,12 +8,15 @@ Smart Escrow P2P is not a complete app, but a robust feature that can be integra
 ## Key Features:
 - 🌐🔒 **Decentralized Escrow:**  Ensures funds are only released when both parties fulfill the terms of the transaction, reducing fraud and increasing trust.
 - 👩‍⚖️ **Dispute Resolution:** In case of a dispute, a third-party arbiter (defined by the developer implementing this feature, typically the platform itself) can intervene to resolve the issue fairly and efficiently.
+- 💼 **Dynamic Wallets:**  Simplifies user onboarding by allowing the creation and management of wallets dynamically. This feature is especially beneficial for users who are not very familiar with cryptocurrency, as it provides a seamless and user-friendly experience without the need for complex wallet setups.
 - 🛠️ **Open Source:**  While not a traditional open source library, Smart Escrow P2P is open for developers to build upon, customize, and integrate into their own applications.
-- 💼 **Dynamic Wallets:**  Simplifies user onboarding by allowing the creation and management of wallets dynamically, enhancing user experience.
 - 📱 **Mobile Optimization:** The front-end is optimized for mobile devices, ensuring seamless access and usability on the go.
 - 🖥️ **Example Front-End:**  Includes a demo front-end to illustrate how the escrow functionality can be integrated and utilized in a real-world scenario.
 
-⚙️ Built using Solidity, NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+## [Dynamic Wallet](https://www.dynamic.xyz/): Enhancing User Onboarding
+One of the standout features of Smart Escrow P2P is the use of Dynamic Wallets. This technology simplifies the process of creating and managing cryptocurrency wallets, making it more accessible to users who may not be familiar with crypto. By automating wallet setup and management, users can easily onboard and participate in secure transactions without needing extensive knowledge of blockchain technology. This feature significantly lowers the barrier to entry, fostering greater adoption and usability in P2P marketplaces.
+
+⚙️ Built using Solidity, Dynamic wallet, NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
 ### Based on 🙌[Scaffold-ETH 2](https://scaffoldeth.io)🙌
 ### Built for 🌎[ETH Global](https://ethglobal.com)🌏
