@@ -67,3 +67,36 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
 - Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
 - Edit your deployment scripts in `packages/hardhat/deploy`
+
+## Roles and Functionality
+
+The Smart Escrow P2P system supports three primary roles: buyer, seller, and arbiter. Each role has specific permissions and capabilities within the application.
+
+### Roles:
+
+#### Buyer 🛍️
+- Buy item
+- Request cancellation of a transaction
+- Open a dispute
+
+#### Seller 🏷️
+- Request or confirm cancellation of a transaction
+- Open a dispute
+
+#### Arbiter 👩‍⚖️
+- Close disputes
+- Refund the buyer or release funds to the seller (only if a dispute is opened)
+
+### Pages:
+- **Home Page**: Users select their role (buyer, seller, arbiter).
+- **Status Page**: Displays the status of all items and transactions.
+- **Item Page**: Allows buyer to view and purchase item.
+- **Deal Page**: Shows the status of a specific item, allowing users to interact based on their role.
+
+### Platform Fee:
+The platform may optionally take a percentage of each transaction as a fee. This can be configured by the platform administrators.
+
+### Recommended Deployment:
+It is advised to use the escrow feature on Layer 2 (L2) chains like Optimism, Arbitrum, etc., to reduce gas fees and improve transaction efficiency.
+
+This setup ensures a seamless, secure, and efficient experience for users, whether they are familiar with cryptocurrency or new to the ecosystem. The use of Dynamic Wallets simplifies onboarding and enhances accessibility, making it easier for users to participate in decentralized transactions.
