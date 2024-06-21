@@ -1,9 +1,9 @@
 # Smart Escrow P2P: 🌐🔒 for P2P Marketplaces 🤝🛒
 
-Smart Escrow P2P is a feature designed to bring security and trust to peer-to-peer (P2P) marketplaces. Leveraging the power of blockchain and smart contracts, this project offers a decentralized escrow service that ensures safe transactions between buyers and sellers of second-hand goods.
+Smart Escrow P2P is a feature designed to bring security and trust to peer-to-peer (P2P) marketplaces by leveraging the power of blockchain and smart contracts. This project offers a decentralized escrow service that ensures safe transactions between buyers and sellers of second-hand goods. 
 
-## Project Overview:
-Smart Escrow P2P is not a complete app, but a robust feature that can be integrated into existing or new applications. It provides a framework for creating secure, trustless transactions using cryptocurrency, making it ideal for marketplaces where users buy and sell second-hand items.
+It is not a complete app but a robust feature that can be integrated into existing or new applications. Smart Escrow P2P provides a framework for creating secure, trustless transactions using cryptocurrency, making it ideal for marketplaces where users buy and sell second-hand items.
+
 
 ## Why Use Crypto Escrow for P2P Marketplaces?
 
@@ -47,16 +47,16 @@ The Smart Escrow P2P system supports three primary roles: buyer, seller, and arb
 
 ### Roles:
 
-#### Buyer 🛍️
+#### 🛍️ Buyer 
 - Buy item
 - Request cancellation of a transaction
 - Open a dispute
 
-#### Seller 🏷️
+#### 🏷️ Seller 
 - Request or confirm cancellation of a transaction
 - Open a dispute
 
-#### Arbiter 👩‍⚖️
+#### 👩‍⚖️ Arbiter 
 - Close disputes
 - Refund the buyer or release funds to the seller (only if a dispute is opened)
 
