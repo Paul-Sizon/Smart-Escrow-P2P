@@ -8,6 +8,7 @@ import { Item } from '../utils/item';
 import deployedContracts from '~~/contracts/deployedContracts';
 import { getBytecode } from '~~/app/api/getBytecode';
 import { supabase } from '~~/utils/supabase/client';
+import { set } from 'nprogress';
 
 interface ItemComponentProps {
     item: Item;
@@ -28,9 +29,13 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
     useEffect(() => {
         const fetchEthPrice = async () => {
             try {
-                const response = await fetch('/api/ethprice');
-                const data = await response.json();
-                setEthPrice(data.ethereum.usd);
+                /* Fetch ETH price from API */    
+
+                // const response = await fetch('/api/ethprice');
+                // const data = await response.json();
+                // setEthPrice(data.ethereum.usd);
+
+                setEthPrice(3500);
             } catch (err) {
                 console.error('Error fetching ETH price:', err);
             }

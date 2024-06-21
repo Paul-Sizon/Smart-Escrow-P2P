@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
@@ -40,9 +39,7 @@ export const queryClient = new QueryClient({
   },
 });
 
-export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
-  const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
+export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => { 
   const [mounted, setMounted] = useState(false);
   const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ID;
 
