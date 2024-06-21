@@ -17,8 +17,12 @@ const Home: NextPage = () => {
             <span className="block text-4xl font-bold">Vendeya: Safe Marketplace</span>
           </h1>
           <div className="flex justify-center items-center space-x-2">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
+          {connectedAddress && (
+  <>
+    <p className="my-2 font-medium">Connected Address:</p>
+    <Address address={connectedAddress} />
+  </>
+)}
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 mt-4">
             <Link href="/item?role=buyer">
