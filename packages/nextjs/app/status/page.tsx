@@ -39,38 +39,55 @@ const StatusesPage: React.FC = () => {
     router.push(`/deal?contractAddress=${contractAddress}&role=${role}`);
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Funds Released':
+        return 'text-green-500';
+      case 'Escrow Cancelled':
+        return 'text-red-500';
+      case 'Dispute Opened':
+        return 'text-yellow-500';
+      case 'Cancellation Requested':
+        return 'text-orange-500';
+      case 'Refund Processed':
+        return 'text-blue-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   return (
-    <div className="container mx-auto my-4 px-4">
-      <h1 className="text-2xl font-bold mb-4">Item Statuses</h1>
+    <div className="container mx-auto my-8 px-4">
+      <h1 className="text-3xl font-bold text-center mb-6">Item Statuses</h1>
       <div className="overflow-x-auto">
-        <table className="table-auto w-full">
-          <thead>
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-2">Item</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Buyer</th>
-              <th className="px-4 py-2">Seller</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Contract Address</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Item</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Price</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Buyer</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Seller</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Status</th>
+              <th className="py-3 px-4 text-left font-medium text-gray-700">Contract Address</th>
             </tr>
           </thead>
           <tbody>
-            {deals.map((deal) => (
+            {deals.map((deal, index) => (
               <tr
                 key={deal.id}
                 onClick={() => handleItemClick(deal.contract_address, role as string)}
-                className="cursor-pointer hover:bg-gray-100"
+                className={`cursor-pointer ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}
               >
-                <td className="border px-4 py-2">{deal.item}</td>
-                <td className="border px-4 py-2">{deal.price}</td>
-                <td className="border px-4 py-2"><Address address={deal.buyer} /></td>
-                <td className="border px-4 py-2"><Address address={deal.seller} /></td>
-                <td className="border px-4 py-2">{deal.status}</td>
-                <td className="border px-4 py-2">{deal.contract_address}</td>
+                <td className="py-3 px-4 border-b border-gray-200">{deal.item}</td>
+                <td className="py-3 px-4 border-b border-gray-200">${deal.price}</td>
+                <td className="py-3 px-4 border-b border-gray-200"><Address address={deal.buyer} /></td>
+                <td className="py-3 px-4 border-b border-gray-200"><Address address={deal.seller} /></td>
+                <td className={`py-3 px-4 border-b border-gray-200 ${getStatusColor(deal.status)}`}>{deal.status}</td>
+                <td className="py-3 px-4 border-b border-gray-200">{deal.contract_address}</td>
               </tr>
             ))}
           </tbody>
