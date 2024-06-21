@@ -63,7 +63,7 @@ const DealPage: React.FC = () => {
         const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const abi = deployedContracts[chainId]?.EscrowContract?.abi;
         const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
@@ -87,7 +87,7 @@ const DealPage: React.FC = () => {
         const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const abi = deployedContracts[chainId]?.EscrowContract?.abi;
         const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
@@ -109,7 +109,7 @@ const DealPage: React.FC = () => {
         const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const abi = deployedContracts[chainId]?.EscrowContract?.abi;
         const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
@@ -131,7 +131,7 @@ const DealPage: React.FC = () => {
         const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const abi = deployedContracts[chainId]?.EscrowContract?.abi;
         const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
@@ -153,7 +153,7 @@ const DealPage: React.FC = () => {
         const chainId = 11155111;
         const provider = new ethers.BrowserProvider(walletClient.data);
         const signer = await provider.getSigner();
-        const abi = deployedContracts[chainId]?.YourContract?.abi;
+        const abi = deployedContracts[chainId]?.EscrowContract?.abi;
         const contract = new ethers.Contract(contractAddress as string, abi, signer);
 
         setIsLoading(true);
