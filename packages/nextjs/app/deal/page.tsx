@@ -176,21 +176,21 @@ const DealPage: React.FC = () => {
                     {role === 'buyer' && (
                         <>
                             <button
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-success transition-colors disabled:bg-gray-400"
                                 onClick={handleConfirm}
                                 disabled={isConfirmDisabled}
                             >
                                 {isLoading ? 'Processing...' : 'Confirm'}
                             </button>
                             <button
-                                className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-warning transition-colors disabled:bg-gray-400"
                                 onClick={handleDispute}
                                 disabled={isDisputeDisabled}
                             >
                                 {isLoading ? 'Processing...' : 'Open Dispute'}
                             </button>
                             <button
-                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-error btn-outline transition-colors disabled:bg-gray-400"
                                 onClick={handleCancel}
                                 disabled={isCancelDisabled}
                             >
@@ -201,14 +201,14 @@ const DealPage: React.FC = () => {
                     {role === 'seller' && (
                         <>
                             <button
-                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-error btn-outline transition-colors disabled:bg-gray-400"
                                 onClick={handleCancel}
                                 disabled={isCancelDisabled}
                             >
                                 {isLoading ? 'Processing...' : 'Request Cancellation'}
                             </button>
                             <button
-                                className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-warning transition-colors disabled:bg-gray-400"
                                 onClick={handleDispute}
                                 disabled={isDisputeDisabled}
                             >
@@ -219,14 +219,14 @@ const DealPage: React.FC = () => {
                      {role === 'arbiter' && (
                         <>
                             <button
-                                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-info transition-colors disabled:bg-gray-400"
                                 onClick={() => handleResolveDispute(true)}
                                 disabled={isResolveDisabled}
                             >
                                 {isLoading ? 'Processing...' : 'Release Funds to Seller'}
                             </button>
                             <button
-                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:bg-gray-400"
+                                className="btn btn-warning transition-colors disabled:bg-gray-400"
                                 onClick={() => handleResolveDispute(false)}
                                 disabled={isResolveDisabled}
                             >
