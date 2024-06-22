@@ -83,14 +83,15 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
 
         setIsLoading(true);
         try {
+            /* This is where you define the contract parameters, currently hard coded to your wallet */
             const buyer = walletClient.data?.account.address;
-            const seller = "0x5994ec6ee2c04EBC93B757A12A647DeB544b7f05";
+            const seller = walletClient.data?.account.address;
             const arbiter = walletClient.data?.account.address;
             const platformWallet = walletClient.data?.account.address;
-            const platformFeePercent = 10;
+            const platformFeePercent = 1;
             const trackingNumber = "123456789";
             const amount = ethers.parseEther(ethAmount);
-            const testAmount = ethers.parseEther('0.001');
+            const testAmount = ethers.parseEther('0.1');  // for test purposes, we will have small amounts of Sepolia ETH
             const gasLimit = 3000000;
 
             const contract = await contractFactory.deploy(
@@ -101,7 +102,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({ item }) => {
                 platformFeePercent,
                 trackingNumber,
                 { 
-                    value: testAmount, // for test purposes, we will have small amounts
+                    value: testAmount,
                     gasLimit: gasLimit }
             );
 

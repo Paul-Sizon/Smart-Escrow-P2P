@@ -28,7 +28,7 @@ const DealPage: React.FC = () => {
             const fetchedItem: Item = {
                 id: "1",
                 imageUrl: 'https://i.ibb.co/bzL1r9t/ps5.jpg',
-                price: 550,
+                price: 350,
                 title: 'PS5 + games',
                 description: 'Great condition',
                 sellerAddress: '0x...'
