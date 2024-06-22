@@ -47,13 +47,13 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col justify-center items-center space-y-4 mt-4">
             <Link href="/item?role=buyer">
-              <button className="btn btn-info md:btn-md text-black">🛍️ I'm a buyer</button>
+              <button className="btn btn-info md:btn-md text-black">🛍️ I am a buyer</button>
             </Link>
             <Link href="/status?role=seller">
-              <button className="btn btn-success md:btn-md text-black">🏷️ I'm a seller</button>
+              <button className="btn btn-success md:btn-md text-black">🏷️ I am a seller</button>
             </Link>
             <Link href="/status?role=arbiter">
-              <button className="btn btn-warning md:btn-md text-black">⚖️ I'm an arbiter</button>
+              <button className="btn btn-warning md:btn-md text-black">⚖️ I am an arbiter</button>
             </Link>
           </div>
         </div>

@@ -41,15 +41,14 @@
   "devDependencies": {
     "husky": "~8.0.3",
     "lint-staged": "~13.2.2",
-    "next": "~14.0.4",
-    "vercel": "~32.4.1"
+    "next": "14.2.4",
+    "vercel": "latest"
   },
   "packageManager": "yarn@3.2.3",
   "engines": {
     "node": ">=18.17.0"
   },
   "dependencies": {
-    "ethers": "6.10.0",
     "react-confetti": "^6.1.0"
   }
 }

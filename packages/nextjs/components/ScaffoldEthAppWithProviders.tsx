@@ -5,14 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
-import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import { WagmiConfig, WagmiProvider } from "wagmi";
+import { WagmiProvider } from "wagmi";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 
@@ -48,20 +47,21 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   }, []);
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <DynamicContextProvider
-          settings={{
-            environmentId: environmentId!,
-            walletConnectors: [EthereumWalletConnectors],
-          }}
-        >
+    <DynamicContextProvider
+      settings={{
+        environmentId: environmentId!,
+        walletConnectors: [EthereumWalletConnectors],
+      }}
+    >
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
           <DynamicWagmiConnector>
             <ProgressBar />
             <ScaffoldEthApp>{children}</ScaffoldEthApp>
           </DynamicWagmiConnector>
-        </DynamicContextProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </DynamicContextProvider>
   );
+  
 };
